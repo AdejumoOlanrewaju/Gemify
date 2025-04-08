@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css'; // Make sure to import the CSS
 import { Bounce } from 'react-toastify';
+import axios from 'axios';
 
 const Signup = () => {
   const [formData, setFormData] = useState({ name: "", email: "", password: "" });
@@ -60,20 +61,20 @@ const Signup = () => {
     }
 
     setLoading(true);
-    const baseUrl = "http://goldapi-usnx.onrender.com/"
+    const baseUrl = "https://goldapi-usnx.onrender.com/"
     const csrftoken = getCSRFToken()
-
     try {
-      const response = await axios.post(`${baseUrl}signup`,
-        { data: formData },
-        {
-          headers: {
-            'X-CSRFToken': csrftoken,
-            'Content-Type': 'application/json'
-          }
-        }
-      );
+      const response = await fetch("https://goldapi-usnx.onrender.com/signup", {
+        method : 'POST',
+        headers: {
+          'Content-Type' : 'application/json'
+        },
+        body: JSON.stringify(formData)
+      }) 
+      const data = await response.json()
+
       setMessage(response.data.message);
+      console.log(data)
       toast.success(response.data.message, {
         position: "top-right",
         autoClose: 5000,
@@ -96,7 +97,6 @@ const Signup = () => {
         theme: "dark",
         transition: Bounce,
       })
-      console.log(message)
     }
 
     setLoading(false);

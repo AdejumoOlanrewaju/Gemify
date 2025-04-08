@@ -759,10 +759,6 @@ video {
   background-color: rgb(255 255 255 / var(--tw-bg-opacity, 1));
 }
 
-.bg-\[url\(\"\/src\/assets\/img\/banner-1\.jpg\"\)\] {
-  background-image: url("/src/assets/img/banner-1.jpg");
-}
-
 .bg-\[url\(\"\/src\/assets\/img\/banner-2\.jpg\"\)\] {
   background-image: url("/src/assets/img/banner-2.jpg");
 }
@@ -973,20 +969,12 @@ video {
     display: flex;
   }
 
-  .lg\:h-\[calc\(100vh-30px\)\] {
-    height: calc(100vh - 30px);
+  .lg\:h-\[calc\(100\%-30px\)\] {
+    height: calc(100% - 30px);
   }
 
   .lg\:h-screen {
     height: 100vh;
-  }
-
-  .lg\:h-\[calc\(10-30px\)\] {
-    height: calc(10 - 30px);
-  }
-
-  .lg\:h-\[calc\(100\%-30px\)\] {
-    height: calc(100% - 30px);
   }
 
   .lg\:w-1\/2 {

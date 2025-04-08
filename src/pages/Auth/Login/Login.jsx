@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import BrandLogo from '/src/assets/svg/brand-logo.svg?react';
 import GoogleLogo from '/src/assets/svg/google-icon.svg?react';
-import { FiCheck } from 'react-icons/fi';
+import { FiCheck, FiLoader } from 'react-icons/fi';
 import { Link } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css'; // Make sure to import the CSS
@@ -33,22 +33,23 @@ const Login = () => {
     }
 
     const handleLogin = async (e) => {
+        e.preventDefault()
         if (Object.keys(handleFormErrs()).length > 0) {
             let formErr = handleFormErrs()
             setFrmErrors(formErr)
             console.log(frmErrors)
             Object.values(frmErrors).forEach(err => {
                 toast.error(err, {
-                  position: "top-right",
-                  autoClose: 5000,
-                  hideProgressBar: false,
-                  closeOnClick: false,
-                  pauseOnHover: true,
-                  draggable: true,
-                  theme: "dark",
-                  transition: Bounce,
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: false,
+                    pauseOnHover: true,
+                    draggable: true,
+                    theme: "dark",
+                    transition: Bounce,
                 })
-              })
+            })
             return
 
         } else {
@@ -57,21 +58,21 @@ const Login = () => {
         }
 
         setLoading(true);
-        const baseUrl = "http://goldapi-usnx.onrender.com/"
+        const baseUrl = "https://goldapi-usnx.onrender.com/"
         const csrftoken = getCSRFToken()
-
         try {
-            const response = await axios.post(`${baseUrl}login`,
-                { data: formData },
-                {
-                    headers: {
-                        'X-CSRFToken': csrftoken,
-                        'Content-Type': 'application/json'
-                    }
-                }
-            );
+
+            const response = await fetch("https://goldapi-usnx.onrender.com/login", {
+              method : 'POST',
+              headers: {
+                'Content-Type' : 'application/json'
+              },
+              body: JSON.stringify(formData)
+            }) 
+            const data = await response.json()
+            console.log(data)
             setMessage(response.data.message);
-            toast.success(response.data.message, {
+            toast.success("response.data.message", {
                 position: "top-right",
                 autoClose: 5000,
                 hideProgressBar: false,
@@ -80,7 +81,7 @@ const Login = () => {
                 draggable: true,
                 theme: "dark",
                 transition: Bounce,
-              })
+            })
         } catch (error) {
             setMessage(error.response?.data?.message || "Something went wrong");
             toast.error(message, {
@@ -92,7 +93,7 @@ const Login = () => {
                 draggable: true,
                 theme: "dark",
                 transition: Bounce,
-              })
+            })
             console.log(message)
         }
 
@@ -101,21 +102,21 @@ const Login = () => {
     };
 
     return (
-        
+
         <div className='lg:flex px-4 py-6 lg:h-screen'>
-              <ToastContainer
-                    position="top-right"
-                    autoClose={5000}
-                    hideProgressBar={false}
-                    newestOnTop={false}
-                    closeOnClick={false}
-                    rtl={false}
-                    pauseOnFocusLoss
-                    draggable
-                    pauseOnHover
-                    theme="light"
-                    transition={Bounce}
-                  />
+            <ToastContainer
+                position="top-right"
+                autoClose={5000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick={false}
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme="light"
+                transition={Bounce}
+            />
             <div className='sm:px-4 lg:w-1/2'>
                 <Link to="/" className='logo-container flex items-center gap-1'>
                     <BrandLogo stroke="gold" width={25} height={25} />
@@ -167,7 +168,7 @@ const Login = () => {
                                 <Link to="/forgot_password" className='underline'>Forgot Password</Link>
                             </div>
 
-                            <button type='button' onClick={handleLogin} className='bg-black text-white font-medium rounded-3xl px-2 py-3 mt-4 w-full active:scale-[.8] transition-transform duration-300 relative'>
+                            <button type='submit' onClick={handleLogin} className='bg-black text-white font-medium rounded-3xl px-2 py-3 mt-4 w-full active:scale-[.8] transition-transform duration-300 relative'>
                                 {loading ? <div className='flex justify-center items-center'>
                                     <FiLoader className='animate-spin w-6 h-6 text-white' />
                                 </div> : <span>Log in</span>}
