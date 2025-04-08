@@ -33,12 +33,14 @@ const Login = () => {
     }
 
     const handleLogin = async (e) => {
-        e.preventDefault()
-        if (Object.keys(handleFormErrs()).length > 0) {
-            let formErr = handleFormErrs()
-            setFrmErrors(formErr)
-            console.log(frmErrors)
-            Object.values(frmErrors).forEach(err => {
+        e.preventDefault();
+        
+        const formErr = handleFormErrs(); // Store errors in a variable
+        if (Object.keys(formErr).length > 0) {
+            setFrmErrors(formErr);
+            console.log(formErr); // Log the correct errors
+    
+            Object.values(formErr).forEach(err => {
                 toast.error(err, {
                     position: "top-right",
                     autoClose: 5000,
@@ -48,31 +50,30 @@ const Login = () => {
                     draggable: true,
                     theme: "dark",
                     transition: Bounce,
-                })
-            })
-            return
-
-        } else {
-            setFrmErrors({})
-            console.log(formData)
+                });
+            });
+    
+            return;
         }
-
+    
+        setFrmErrors({});
+        console.log(formData); // Ensure form data is correct
+    
         setLoading(true);
-        const baseUrl = "https://goldapi-usnx.onrender.com/"
-        const csrftoken = getCSRFToken()
+        const baseUrl = "https://goldapi-usnx.onrender.com/";
+    
         try {
-
-            const response = await fetch("https://goldapi-usnx.onrender.com/login", {
-              method : 'POST',
-              headers: {
-                'Content-Type' : 'application/json'
-              },
-              body: JSON.stringify(formData)
-            }) 
-            const data = await response.json()
-            console.log(data)
-            setMessage(data.message);
-            if(response.ok){
+            const response = await fetch(baseUrl + "login/", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(formData)
+            });
+    
+            const data = await response.json(); // Parse response
+            console.log(data);
+            if (response.ok) {
                 toast.success("Login successful", {
                     position: "top-right",
                     autoClose: 5000,
@@ -82,26 +83,26 @@ const Login = () => {
                     draggable: true,
                     theme: "dark",
                     transition: Bounce,
-                })
+                });
+            } else {
+                toast.error(data.error, { // Use `data.message`, not `message`
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: false,
+                    pauseOnHover: true,
+                    draggable: true,
+                    theme: "dark",
+                    transition: Bounce,
+                });
             }
         } catch (error) {
-            setMessage(error.data?.message || "Something went wrong");
-            toast.error(message, {
-                position: "top-right",
-                autoClose: 5000,
-                hideProgressBar: false,
-                closeOnClick: false,
-                pauseOnHover: true,
-                draggable: true,
-                theme: "dark",
-                transition: Bounce,
-            })
-            console.log(message)
+            console.error("Login error:", error);
         }
-
+    
         setLoading(false);
-
     };
+    
 
     return (
 
