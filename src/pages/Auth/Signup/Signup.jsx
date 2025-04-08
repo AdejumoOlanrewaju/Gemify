@@ -9,7 +9,7 @@ import { Bounce } from 'react-toastify';
 import axios from 'axios';
 
 const Signup = () => {
-  const [formData, setFormData] = useState({ name: "", email: "", password: "" });
+  const [formData, setFormData] = useState({ first_name: "", email: "", password: "" });
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
   const [frmErrors, setFrmErrors] = useState({})
@@ -27,7 +27,7 @@ const Signup = () => {
 
   const handleFormErrs = () => {
     let formErrors = {};
-    if (formData.name === "") formErrors.name = "Name is required";
+    if (formData.first_name === "") formErrors.first_name = "Name is required";
     if (formData.email === "") formErrors.email = "Email is required";
     if (!formData.email.includes('@')) formErrors.email = "Please enter a valid email";
     if (formData.password === "") formErrors.password = "Password is required";
@@ -57,14 +57,14 @@ const Signup = () => {
 
     } else {
       setFrmErrors({})
-      console.log(formData)
+      // console.log(formData)
     }
 
     setLoading(true);
     const baseUrl = "https://goldapi-usnx.onrender.com/"
-    const csrftoken = getCSRFToken()
+    console.log(formData)
     try {
-      const response = await fetch("https://goldapi-usnx.onrender.com/signup", {
+      const response = await fetch(baseUrl + "signup/", {
         method : 'POST',
         headers: {
           'Content-Type' : 'application/json'
@@ -72,31 +72,33 @@ const Signup = () => {
         body: JSON.stringify(formData)
       }) 
       const data = await response.json()
-
-      setMessage(response.data.message);
       console.log(data)
-      toast.success(response.data.message, {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: false,
-        pauseOnHover: true,
-        draggable: true,
-        theme: "dark",
-        transition: Bounce,
-      })
+      if(response.ok){
+        toast.success("Signup successful", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: false,
+          pauseOnHover: true,
+          draggable: true,
+          theme: "dark",
+          transition: Bounce,
+        })
+
+      }else{
+        toast.error(data.error, {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: false,
+          pauseOnHover: true,
+          draggable: true,
+          theme: "dark",
+          transition: Bounce,
+        })
+      }
     } catch (error) {
-      setMessage(error.response?.data?.message || "Something went wrong");
-      toast.error(message, {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: false,
-        pauseOnHover: true,
-        draggable: true,
-        theme: "dark",
-        transition: Bounce,
-      })
+      console.log(error)
     }
 
     setLoading(false);
@@ -141,7 +143,7 @@ const Signup = () => {
                 <label className='after:content-["*"] after:absolute after:text-red-500' htmlFor="name">
                   Name
                 </label>
-                <input name="name" value={formData.name} onChange={handleChange} className='border border-gray-400 block w-full mt-2 rounded py-2 px-3 placeholder:text-gray-500' type="text" placeholder='Enter your name' />
+                <input name="first_name" value={formData.name} onChange={handleChange} className='border border-gray-400 block w-full mt-2 rounded py-2 px-3 placeholder:text-gray-500' type="text" placeholder='Enter your name' />
               </div>
 
               <div className="input-container mt-4">
@@ -174,7 +176,7 @@ const Signup = () => {
                 </label>
               </div>
 
-              <button type='submit' onClick={handleSignup} className='bg-black text-white font-medium rounded-3xl px-2 py-3 mt-4 w-full active:scale-[.8] transition-transform duration-300 relative'>
+              <button type='button' onClick={handleSignup} className='bg-black text-white font-medium rounded-3xl px-2 py-3 mt-4 w-full active:scale-[.8] transition-transform duration-300 relative'>
                 {loading ? <div className='flex justify-center items-center'>
                   <FiLoader className='animate-spin w-6 h-6 text-white' />
                 </div> : <span>Sign up</span>}

@@ -71,19 +71,21 @@ const Login = () => {
             }) 
             const data = await response.json()
             console.log(data)
-            setMessage(response.data.message);
-            toast.success("response.data.message", {
-                position: "top-right",
-                autoClose: 5000,
-                hideProgressBar: false,
-                closeOnClick: false,
-                pauseOnHover: true,
-                draggable: true,
-                theme: "dark",
-                transition: Bounce,
-            })
+            setMessage(data.message);
+            if(response.ok){
+                toast.success("Login successful", {
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: false,
+                    pauseOnHover: true,
+                    draggable: true,
+                    theme: "dark",
+                    transition: Bounce,
+                })
+            }
         } catch (error) {
-            setMessage(error.response?.data?.message || "Something went wrong");
+            setMessage(error.data?.message || "Something went wrong");
             toast.error(message, {
                 position: "top-right",
                 autoClose: 5000,
