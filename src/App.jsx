@@ -1,8 +1,8 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom'
 import Login from './pages/Auth/Login/Login'
-import Home from './pages/Home/Home'
-import Logout from './pages/Auth/Logout/Logout'
-import Signup from './pages/Auth/Signup/signup'
+import Home from './pages/Home/Home.jsx'
+import Logout from './pages/Auth/Logout/Logout.jsx'
+import Signup from "./pages/Auth/Signup/Signup.jsx"
 
 function App() {
   const isLoggedIn = localStorage.getItem("isLoggedIn") === "true"
@@ -18,7 +18,7 @@ function App() {
 
           <Route path="/logout" element={<Logout />} />
 
-          <Route path="/signup" element={<Signup />} />
+          <Route path = "/signup" element = {<Signup/>} />
 
           <Route path='*' element={<Navigate to="/" />} />
         </Routes>

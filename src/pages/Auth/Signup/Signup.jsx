@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import BrandLogo from '/src/assets/svg/brand-logo.svg?react';
 import GoogleLogo from '/src/assets/svg/google-icon.svg?react';
 import { FiCheck, FiLoader } from 'react-icons/fi';
-import { data, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css'; // Make sure to import the CSS
 import { Bounce } from 'react-toastify';
