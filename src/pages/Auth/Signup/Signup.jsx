@@ -124,7 +124,7 @@ const Signup = () => {
           <span className='text-xl font-medium text-gray-700'>GEMIFY</span>
         </Link>
 
-        <div className='lg:h-[calc(100vh-30px)] mt-16 lg:mt-0 flex flex-col justify-center'>
+        <div className='lg:h-[calc(100%-30px)] mt-16 lg:mt-0 flex flex-col justify-center'>
           <div className='form-container mt-3 lg:w-[80%] lg:mx-auto'>
             <h3 className='text-5xl font-semibold text-center'>Create your account</h3>
             <p className='text-gray-500 text-center mt-2'> Let's get started with your 30 days free trial</p>
@@ -187,7 +187,7 @@ const Signup = () => {
           </div>
         </div>
       </div>
-      <div className='lg:w-1/2 hidden p-2 pb-28 relative z-[1] overflow-hidden bg-[url("/src/assets/img/banner-1.jpg")] bg-cover bg-center h-full rounded-lg lg:flex flex-col justify-end items-center text-center'>
+      <div className='lg:w-1/2 hidden p-2 pb-28 relative z-[1] overflow-hidden bg-[url("/src/assets/img/banner-2.jpg")] bg-cover bg-center h-full rounded-lg lg:flex flex-col justify-end items-center text-center'>
         <div className="absolute inset-0 -z-[1] bg-black/40"></div>
         <div className='lg:w-[85%]'>
           <h4 className='text-[2.5rem] leading-tight text-white font-semibold mb-5'>Pure Gold, Timeless Value – Buy Raw & Crafted Gold with Confidence!</h4>
