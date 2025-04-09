@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import BrandLogo from '/src/assets/svg/brand-logo.svg?react';
 import GoogleLogo from '/src/assets/svg/google-icon.svg?react';
 import { FiCheck, FiLoader } from 'react-icons/fi';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css'; // Make sure to import the CSS
 import { Bounce } from 'react-toastify';
@@ -12,15 +12,10 @@ const Login = () => {
     const [message, setMessage] = useState("");
     const [frmErrors, setFrmErrors] = useState({})
 
+    const navigate = useNavigate()
+
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
-    };
-
-    const getCSRFToken = () => {
-        const value = `; ${document.cookie}`;
-        const parts = value.split(`; csrftoken=`);
-        if (parts.length === 2) return parts.pop().split(';').shift();
-        return '';
     };
 
     const handleFormErrs = () => {
@@ -39,20 +34,6 @@ const Login = () => {
         if (Object.keys(formErr).length > 0) {
             setFrmErrors(formErr);
             console.log(formErr); // Log the correct errors
-    
-            Object.values(formErr).forEach(err => {
-                toast.error(err, {
-                    position: "top-right",
-                    autoClose: 5000,
-                    hideProgressBar: false,
-                    closeOnClick: false,
-                    pauseOnHover: true,
-                    draggable: true,
-                    theme: "dark",
-                    transition: Bounce,
-                });
-            });
-    
             return;
         }
     
@@ -63,7 +44,7 @@ const Login = () => {
         const baseUrl = "https://goldapi-usnx.onrender.com/";
     
         try {
-            const response = await fetch(baseUrl + "login/", {
+            const response = await fetch( "https://goldapi-usnx.onrender.com/login/", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
@@ -84,7 +65,11 @@ const Login = () => {
                     theme: "dark",
                     transition: Bounce,
                 });
-            } else {
+                setTimeout(() => {
+                    navigate("/")
+                }, 5000)
+               
+            } else if(!response.ok) {
                 toast.error(data.error, { // Use `data.message`, not `message`
                     position: "top-right",
                     autoClose: 5000,
@@ -101,6 +86,7 @@ const Login = () => {
         }
     
         setLoading(false);
+       
     };
     
 
@@ -193,5 +179,12 @@ const Login = () => {
         </div>
     )
 }
+
+// const getCSRFToken = () => {
+//     const value = `; ${document.cookie}`;
+//     const parts = value.split(`; csrftoken=`);
+//     if (parts.length === 2) return parts.pop().split(';').shift();
+//     return '';
+// };
 
 export default Login

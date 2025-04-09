@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import BrandLogo from '/src/assets/svg/brand-logo.svg?react';
 import GoogleLogo from '/src/assets/svg/google-icon.svg?react';
 import { FiCheck, FiLoader } from 'react-icons/fi';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css'; // Make sure to import the CSS
 import { Bounce } from 'react-toastify';
@@ -13,6 +13,8 @@ const Signup = () => {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
   const [frmErrors, setFrmErrors] = useState({})
+
+  const navigate = useNavigate()
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -65,15 +67,15 @@ const Signup = () => {
     console.log(formData)
     try {
       const response = await fetch(baseUrl + "signup/", {
-        method : 'POST',
+        method: 'POST',
         headers: {
-          'Content-Type' : 'application/json'
+          'Content-Type': 'application/json'
         },
         body: JSON.stringify(formData)
-      }) 
+      })
       const data = await response.json()
       console.log(data)
-      if(response.ok){
+      if (response.ok) {
         toast.success("Signup successful", {
           position: "top-right",
           autoClose: 5000,
@@ -84,8 +86,11 @@ const Signup = () => {
           theme: "dark",
           transition: Bounce,
         })
+        setTimeout(() => {
+          navigate("/login")
+        }, 5000)
 
-      }else{
+      } else {
         toast.error(data.error, {
           position: "top-right",
           autoClose: 5000,
@@ -102,7 +107,7 @@ const Signup = () => {
     }
 
     setLoading(false);
-
+   
   };
 
   return (
